@@ -13,21 +13,25 @@ import SwiftyJSON
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     let currencyArray: [String] = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
+    let currencySymbols: [String] = ["$", "R$", "$", "¥", "€", "£", "$", "Rp", "₪", "₹", "¥", "$", "kr", "$", "zł", "lei", "₽", "kr", "$", "$", "R"]
     let baseURL: String = "https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC"
     var finalURL: String = ""
+    var currencySymbolValue: Int?
     
     // IBOutlets
     @IBOutlet weak var currencyPicker: UIPickerView!
     @IBOutlet weak var priceLabel: UILabel!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        priceLabel.adjustsFontSizeToFitWidth = true
         
         currencyPicker.delegate = self
         currencyPicker.dataSource = self
         
         let initialCurrencyURL = generateCurrencyURL(currency: currencyArray[0])
+        currencySymbolValue = 0
         getCurrencyData(url: initialCurrencyURL)
     }
 
@@ -56,6 +60,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         finalURL = generateCurrencyURL(currency: currencyArray[row])
+        currencySymbolValue = row
         getCurrencyData(url: finalURL)
     }
     
@@ -83,7 +88,12 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         if let tempPriceValue: Double = json["open"]["hour"].double {
             
-            self.priceLabel.text = String(tempPriceValue)
+            if let tempCSV = currencySymbolValue {
+                self.priceLabel.text = "\(currencySymbols[tempCSV])\(tempPriceValue)"
+            } else {
+                self.priceLabel.text = String(tempPriceValue)
+            }
+            
             
         } else {
             self.priceLabel.text = "Price unavailable"
