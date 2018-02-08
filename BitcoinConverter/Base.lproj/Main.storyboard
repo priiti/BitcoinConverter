@@ -32,7 +32,7 @@
                                             <constraint firstAttribute="height" constant="216" id="91b-0I-QRt"/>
                                         </constraints>
                                     </pickerView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pyx-Sm-kgn" userLabel="Price Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pyx-Sm-kgn" userLabel="Price Label">
                                         <rect key="frame" x="8" y="170" width="359" height="110"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="110" id="BXy-SV-muM"/>

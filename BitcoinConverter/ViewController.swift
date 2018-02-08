@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
@@ -24,6 +26,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         currencyPicker.delegate = self
         currencyPicker.delegate = self
+        
+        let initialCurrencyURL = generateCurrencyURL(currency: currencyArray[0])
+        getCurrencyData(url: initialCurrencyURL)
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,23 +36,66 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
     }
     
+    //MARK: UIPickerView delegate methods
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
         return currencyArray.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
         return currencyArray[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        finalURL = baseURL + currencyArray[row]
-        print(finalURL)
+        
+        finalURL = generateCurrencyURL(currency: currencyArray[row])
+        getCurrencyData(url: finalURL)
     }
-
+    
+    //MARK: - Networking
+    
+    func getCurrencyData(url: String) {
+        
+        Alamofire.request(url, method: .get)
+            .responseJSON { response in
+                
+                if response.result.isSuccess {
+                    let currencyJSON: JSON = JSON(response.result.value!)
+                    
+                    self.updatePriceData(json: currencyJSON)
+                    
+                } else {
+                    self.priceLabel.text = "Connection issues"
+                }
+        }
+    }
+    
+    //MARK: UIUpdates
+    
+    func updatePriceData(json: JSON) {
+        
+        if let tempPriceValue: Double = json["open"]["hour"].double {
+            
+            self.priceLabel.text = String(tempPriceValue)
+            
+        } else {
+            self.priceLabel.text = "Price unavailable"
+        }
+    }
+    
+    //MARK: Common
+    
+    func generateCurrencyURL(currency: String) -> String {
+        return baseURL + currency
+        
+    }
 
 }
 
