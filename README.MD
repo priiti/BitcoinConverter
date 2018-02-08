@@ -1,1 +1,1 @@
-Bitcoin tracker
+Bitcoin converter to desired currency
