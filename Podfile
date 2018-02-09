@@ -8,4 +8,5 @@ target 'BitcoinConverter' do
   # Pods for BitcoinConverter
     pod 'SwiftyJSON'
     pod 'Alamofire'
+    pod 'SVProgressHUD'
 end

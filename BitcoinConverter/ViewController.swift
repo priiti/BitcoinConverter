@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import SVProgressHUD
 
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
@@ -67,13 +68,15 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     //MARK: - Networking
     
     func getCurrencyData(url: String) {
+        SVProgressHUD.show()
         
         Alamofire.request(url, method: .get)
             .responseJSON { response in
                 
                 if response.result.isSuccess {
-                    let currencyJSON: JSON = JSON(response.result.value!)
                     
+                    let currencyJSON: JSON = JSON(response.result.value!)
+                    SVProgressHUD.dismiss()
                     self.updatePriceData(json: currencyJSON)
                     
                 } else {
